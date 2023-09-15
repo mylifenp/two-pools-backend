@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  backend:
+    container_name: "backend"
+    hostname: "backend"
+    restart: "always"
+    env_file:
+      - .env
+    build: .
+    # build: npm run start
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 8080:8080
+    links:
+      - mongodb
+      - redis
+    depends_on:
+      - mongodb
+      - redis
+
+  mongodb:
+    image: "mongo:latest"
+    restart: "always"
+    container_name: "mongodb"
+    env_file:
+      - ./.docker/database/.env
+    volumes:
+      - ./.docker/database/mongod.conf:/etc/mongod.conf
+      - ./.docker/database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./.docker/database/data/db:/data/db/
+      - ./.docker/database/data/log/:/var/log/database/
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: "redis:latest"
+    container_name: "redis"
+    restart: "always"
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./.docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./.docker/redis/redis-data:/data
+    env_file:
+      - redis.env
+    command:
+      - redis-server
+      - /usr/local/etc/redis/redis.conf
+
+volumes:
+  mongodb:
+    driver: local
+  redis-data:
+    driver: local
+
+networks:
+  default:
