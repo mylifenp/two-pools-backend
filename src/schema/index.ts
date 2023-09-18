@@ -1,4 +1,5 @@
 import cemeterySchema from "./cemetery.schema.js";
+import chapterSchema from "./chapter.schema.js";
 import misclSchema from "./miscl.schema.js";
 import trusteeSchema from "./trustee.schema.js";
 
@@ -15,4 +16,10 @@ const linkSchema = `#graphql
   }
 `;
 
-export default [linkSchema, misclSchema, trusteeSchema, cemeterySchema];
+export default [
+  linkSchema,
+  misclSchema,
+  trusteeSchema,
+  cemeterySchema,
+  chapterSchema,
+];
