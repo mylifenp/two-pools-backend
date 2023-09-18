@@ -3,6 +3,8 @@ import "dotenv/config";
 export default {
   ENV: process.env.NODE_ENV ?? "development",
   PORT: process.env.PORT ?? 8000,
+  REDIS_USERNAME: process.env.REDIS_USERNAME ?? "",
+  REDIS_PASSWORD: process.env.REDIS_PASSWORD ?? "",
   REDIS_HOST: process.env.REDIS_HOST ?? "localhost",
   REDIS_PORT: process.env.REDIS_PORT ?? 6379,
   DATABASE_URI: process.env.DATABASE_URI ?? "mongodb://localhost:27017",

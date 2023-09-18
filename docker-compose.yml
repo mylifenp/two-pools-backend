@@ -35,7 +35,7 @@ services:
       - "27017:27017"
 
   redis:
-    image: "redis:latest"
+    image: "redis/redis-stack:latest"
     container_name: "redis"
     restart: "always"
     ports:
@@ -45,9 +45,9 @@ services:
       - ./.docker/redis/redis-data:/data
     env_file:
       - redis.env
-    command:
-      - redis-server
-      - /usr/local/etc/redis/redis.conf
+    # command:
+    #   - redis-server
+    #   - /usr/local/etc/redis/redis.conf
 
 volumes:
   mongodb:

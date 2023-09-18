@@ -17,160 +17,116 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
-export type AddCemeteryInput = {
-  address?: InputMaybe<AddressInput>;
-  coordinates?: InputMaybe<CoordinatesInput>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  notes?: InputMaybe<Scalars['String']['input']>;
-  trustee: Scalars['ID']['input'];
+export type Attachment = {
+  __typename?: 'Attachment';
+  name?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
 };
 
-export type AddTrusteeInput = {
-  address?: InputMaybe<AddressInput>;
-  bankDetails?: InputMaybe<Array<InputMaybe<BankDetailInput>>>;
-  contacts?: InputMaybe<ContactsInput>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  notes?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Address = {
-  __typename?: 'Address';
-  city?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
-  houseNumber?: Maybe<Scalars['String']['output']>;
-  state?: Maybe<Scalars['String']['output']>;
-  street?: Maybe<Scalars['String']['output']>;
-  zip?: Maybe<Scalars['String']['output']>;
-};
-
-export type AddressInput = {
-  city?: InputMaybe<Scalars['String']['input']>;
-  country?: InputMaybe<Scalars['String']['input']>;
-  houseNumber?: InputMaybe<Scalars['String']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
-  street?: InputMaybe<Scalars['String']['input']>;
-  zip?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type BankDetail = {
-  __typename?: 'BankDetail';
-  bankName?: Maybe<Scalars['String']['output']>;
-  bic?: Maybe<Scalars['String']['output']>;
-  iban?: Maybe<Scalars['String']['output']>;
-};
-
-export type BankDetailInput = {
-  bankName?: InputMaybe<Scalars['String']['input']>;
-  bic?: InputMaybe<Scalars['String']['input']>;
-  iban?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Cemetery = {
-  __typename?: 'Cemetery';
-  address?: Maybe<Address>;
-  coordinates?: Maybe<Coordinates>;
+export type Category = {
+  __typename?: 'Category';
   createdAt?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  notes?: Maybe<Scalars['String']['output']>;
-  trustee?: Maybe<Trustee>;
+  name: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['String']['output']>;
 };
 
-export type Contacts = {
-  __typename?: 'Contacts';
-  emails?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  phones?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+export type Estimation = {
+  __typename?: 'Estimation';
+  unit?: Maybe<EstimationUnit>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
-export type ContactsInput = {
-  emails?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  phones?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
+export enum EstimationUnit {
+  DaysPerMonth = 'DAYS_PER_MONTH',
+  DaysPerYear = 'DAYS_PER_YEAR',
+  Flexible = 'FLEXIBLE',
+  FullTime = 'FULL_TIME',
+  HoursPerDay = 'HOURS_PER_DAY',
+  HoursPerMonth = 'HOURS_PER_MONTH',
+  HoursPerWeek = 'HOURS_PER_WEEK',
+  PartTime = 'PART_TIME'
+}
 
-export type Coordinates = {
-  __typename?: 'Coordinates';
-  latitude?: Maybe<Scalars['Float']['output']>;
-  longitude?: Maybe<Scalars['Float']['output']>;
-};
-
-export type CoordinatesInput = {
-  latitude?: InputMaybe<Scalars['Float']['input']>;
-  longitude?: InputMaybe<Scalars['Float']['input']>;
-};
+export enum ExperienceLevel {
+  EntryLevel = 'ENTRY_LEVEL',
+  Expert = 'EXPERT',
+  Intermediate = 'INTERMEDIATE'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']['output']>;
-  addCemetery?: Maybe<Cemetery>;
-  addTrustee?: Maybe<Trustee>;
-  updateTrustee?: Maybe<Trustee>;
+  addSkill: Skill;
+  updateSkill: Skill;
 };
 
 
-export type MutationAddCemeteryArgs = {
-  input: AddCemeteryInput;
+export type MutationAddSkillArgs = {
+  name: Scalars['String']['input'];
 };
 
 
-export type MutationAddTrusteeArgs = {
-  input: AddTrusteeInput;
-};
-
-
-export type MutationUpdateTrusteeArgs = {
+export type MutationUpdateSkillArgs = {
   id: Scalars['ID']['input'];
-  input: AddTrusteeInput;
+  name: Scalars['String']['input'];
+};
+
+export type Project = {
+  __typename?: 'Project';
+  attachments: Array<Maybe<Attachment>>;
+  categories: Array<Maybe<Category>>;
+  createdAt: Scalars['Date']['output'];
+  description: Scalars['String']['output'];
+  estimation: Estimation;
+  experience_level: ExperienceLevel;
+  id: Scalars['ID']['output'];
+  location: Scalars['String']['output'];
+  required_skills: Array<Skill>;
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+  user: User;
 };
 
 export type Query = {
   __typename?: 'Query';
   _?: Maybe<Scalars['Boolean']['output']>;
-  cemetery?: Maybe<Cemetery>;
-  test?: Maybe<Test>;
-  trustee?: Maybe<Trustee>;
+  skill: Skill;
+  skills: Array<Skill>;
+  suggestedSkills: Array<Maybe<Skill>>;
 };
 
 
-export type QueryCemeteryArgs = {
+export type QuerySkillArgs = {
   id: Scalars['ID']['input'];
 };
 
 
-export type QueryTrusteeArgs = {
-  id: Scalars['ID']['input'];
+export type QuerySuggestedSkillsArgs = {
+  ids?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+};
+
+export type Skill = {
+  __typename?: 'Skill';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type Subscription = {
   __typename?: 'Subscription';
   _?: Maybe<Scalars['Boolean']['output']>;
-  trusteeUpdated: TrusteeUpdated;
 };
 
-export type Test = {
-  __typename?: 'Test';
-  email?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-};
-
-export type Trustee = {
-  __typename?: 'Trustee';
-  address?: Maybe<Address>;
-  bankDetails?: Maybe<Array<Maybe<BankDetail>>>;
-  cemeteries?: Maybe<Array<Maybe<Cemetery>>>;
-  contacts?: Maybe<Contacts>;
+export type User = {
+  __typename?: 'User';
   createdAt?: Maybe<Scalars['String']['output']>;
+  email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  notes?: Maybe<Scalars['String']['output']>;
+  oidc_id: Scalars['String']['output'];
+  profile_url?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['String']['output']>;
-};
-
-export type TrusteeUpdated = {
-  __typename?: 'TrusteeUpdated';
-  event: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  trustee: Trustee;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -245,94 +201,53 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  AddCemeteryInput: AddCemeteryInput;
-  AddTrusteeInput: AddTrusteeInput;
-  Address: ResolverTypeWrapper<Address>;
-  AddressInput: AddressInput;
-  BankDetail: ResolverTypeWrapper<BankDetail>;
-  BankDetailInput: BankDetailInput;
+  Attachment: ResolverTypeWrapper<Attachment>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  Cemetery: ResolverTypeWrapper<Cemetery>;
-  Contacts: ResolverTypeWrapper<Contacts>;
-  ContactsInput: ContactsInput;
-  Coordinates: ResolverTypeWrapper<Coordinates>;
-  CoordinatesInput: CoordinatesInput;
+  Category: ResolverTypeWrapper<Category>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
+  Estimation: ResolverTypeWrapper<Estimation>;
+  EstimationUnit: EstimationUnit;
+  ExperienceLevel: ExperienceLevel;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  Project: ResolverTypeWrapper<Project>;
   Query: ResolverTypeWrapper<{}>;
+  Skill: ResolverTypeWrapper<Skill>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
-  Test: ResolverTypeWrapper<Test>;
-  Trustee: ResolverTypeWrapper<Trustee>;
-  TrusteeUpdated: ResolverTypeWrapper<TrusteeUpdated>;
+  User: ResolverTypeWrapper<User>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  AddCemeteryInput: AddCemeteryInput;
-  AddTrusteeInput: AddTrusteeInput;
-  Address: Address;
-  AddressInput: AddressInput;
-  BankDetail: BankDetail;
-  BankDetailInput: BankDetailInput;
+  Attachment: Attachment;
   Boolean: Scalars['Boolean']['output'];
-  Cemetery: Cemetery;
-  Contacts: Contacts;
-  ContactsInput: ContactsInput;
-  Coordinates: Coordinates;
-  CoordinatesInput: CoordinatesInput;
+  Category: Category;
   Date: Scalars['Date']['output'];
+  Estimation: Estimation;
   Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Mutation: {};
+  Project: Project;
   Query: {};
+  Skill: Skill;
   String: Scalars['String']['output'];
   Subscription: {};
-  Test: Test;
-  Trustee: Trustee;
-  TrusteeUpdated: TrusteeUpdated;
+  User: User;
 }>;
 
-export type AddressResolvers<ContextType = any, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = ResolversObject<{
-  city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  houseNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  state?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  street?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  zip?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type AttachmentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Attachment'] = ResolversParentTypes['Attachment']> = ResolversObject<{
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type BankDetailResolvers<ContextType = any, ParentType extends ResolversParentTypes['BankDetail'] = ResolversParentTypes['BankDetail']> = ResolversObject<{
-  bankName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  bic?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  iban?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type CemeteryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Cemetery'] = ResolversParentTypes['Cemetery']> = ResolversObject<{
-  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
-  coordinates?: Resolver<Maybe<ResolversTypes['Coordinates']>, ParentType, ContextType>;
+export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = ResolversObject<{
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  notes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  trustee?: Resolver<Maybe<ResolversTypes['Trustee']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ContactsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Contacts'] = ResolversParentTypes['Contacts']> = ResolversObject<{
-  emails?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
-  phones?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type CoordinatesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']> = ResolversObject<{
-  latitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  longitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -340,63 +255,73 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date';
 }
 
+export type EstimationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Estimation'] = ResolversParentTypes['Estimation']> = ResolversObject<{
+  unit?: Resolver<Maybe<ResolversTypes['EstimationUnit']>, ParentType, ContextType>;
+  value?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  addCemetery?: Resolver<Maybe<ResolversTypes['Cemetery']>, ParentType, ContextType, RequireFields<MutationAddCemeteryArgs, 'input'>>;
-  addTrustee?: Resolver<Maybe<ResolversTypes['Trustee']>, ParentType, ContextType, RequireFields<MutationAddTrusteeArgs, 'input'>>;
-  updateTrustee?: Resolver<Maybe<ResolversTypes['Trustee']>, ParentType, ContextType, RequireFields<MutationUpdateTrusteeArgs, 'id' | 'input'>>;
+  addSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationAddSkillArgs, 'name'>>;
+  updateSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationUpdateSkillArgs, 'id' | 'name'>>;
+}>;
+
+export type ProjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = ResolversObject<{
+  attachments?: Resolver<Array<Maybe<ResolversTypes['Attachment']>>, ParentType, ContextType>;
+  categories?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  estimation?: Resolver<ResolversTypes['Estimation'], ParentType, ContextType>;
+  experience_level?: Resolver<ResolversTypes['ExperienceLevel'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  location?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  required_skills?: Resolver<Array<ResolversTypes['Skill']>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  cemetery?: Resolver<Maybe<ResolversTypes['Cemetery']>, ParentType, ContextType, RequireFields<QueryCemeteryArgs, 'id'>>;
-  test?: Resolver<Maybe<ResolversTypes['Test']>, ParentType, ContextType>;
-  trustee?: Resolver<Maybe<ResolversTypes['Trustee']>, ParentType, ContextType, RequireFields<QueryTrusteeArgs, 'id'>>;
+  skill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<QuerySkillArgs, 'id'>>;
+  skills?: Resolver<Array<ResolversTypes['Skill']>, ParentType, ContextType>;
+  suggestedSkills?: Resolver<Array<Maybe<ResolversTypes['Skill']>>, ParentType, ContextType, Partial<QuerySuggestedSkillsArgs>>;
+}>;
+
+export type SkillResolvers<ContextType = any, ParentType extends ResolversParentTypes['Skill'] = ResolversParentTypes['Skill']> = ResolversObject<{
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   _?: SubscriptionResolver<Maybe<ResolversTypes['Boolean']>, "_", ParentType, ContextType>;
-  trusteeUpdated?: SubscriptionResolver<ResolversTypes['TrusteeUpdated'], "trusteeUpdated", ParentType, ContextType>;
 }>;
 
-export type TestResolvers<ContextType = any, ParentType extends ResolversParentTypes['Test'] = ResolversParentTypes['Test']> = ResolversObject<{
-  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type TrusteeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Trustee'] = ResolversParentTypes['Trustee']> = ResolversObject<{
-  address?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
-  bankDetails?: Resolver<Maybe<Array<Maybe<ResolversTypes['BankDetail']>>>, ParentType, ContextType>;
-  cemeteries?: Resolver<Maybe<Array<Maybe<ResolversTypes['Cemetery']>>>, ParentType, ContextType>;
-  contacts?: Resolver<Maybe<ResolversTypes['Contacts']>, ParentType, ContextType>;
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  notes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  oidc_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  profile_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type TrusteeUpdatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['TrusteeUpdated'] = ResolversParentTypes['TrusteeUpdated']> = ResolversObject<{
-  event?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  trustee?: Resolver<ResolversTypes['Trustee'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type Resolvers<ContextType = any> = ResolversObject<{
-  Address?: AddressResolvers<ContextType>;
-  BankDetail?: BankDetailResolvers<ContextType>;
-  Cemetery?: CemeteryResolvers<ContextType>;
-  Contacts?: ContactsResolvers<ContextType>;
-  Coordinates?: CoordinatesResolvers<ContextType>;
+  Attachment?: AttachmentResolvers<ContextType>;
+  Category?: CategoryResolvers<ContextType>;
   Date?: GraphQLScalarType;
+  Estimation?: EstimationResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Project?: ProjectResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Skill?: SkillResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
-  Test?: TestResolvers<ContextType>;
-  Trustee?: TrusteeResolvers<ContextType>;
-  TrusteeUpdated?: TrusteeUpdatedResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 }>;
 

@@ -1,44 +1,25 @@
 export default `#graphql
-  type Address {
-    street: String
-    city: String
-    state: String
-    zip: String
-    country: String
-    houseNumber: String
+  enum EstimationUnit {
+    HOURS_PER_DAY,
+    HOURS_PER_WEEK,
+    HOURS_PER_MONTH,
+    DAYS_PER_MONTH,
+    DAYS_PER_YEAR,
+    FULL_TIME,
+    PART_TIME,
+    FLEXIBLE
   }
-  input AddressInput {
-    street: String
-    city: String
-    state: String
-    zip: String
-    country: String
-    houseNumber: String
+  enum ExperienceLevel {
+    ENTRY_LEVEL,
+    INTERMEDIATE,
+    EXPERT,
   }
-  type Contacts {
-    emails: [String]
-    phones: [String]
+  type Estimation {
+    unit: EstimationUnit
+    value: Float
   }
-  input ContactsInput {
-    emails: [String]
-    phones: [String]
-  }
-  type Coordinates {
-    latitude: Float
-    longitude: Float
-  }
-  input CoordinatesInput {
-    latitude: Float
-    longitude: Float
-  }
-  type BankDetail {
-    bankName: String
-    iban: String
-    bic: String
-  }
-  input BankDetailInput {
-    bankName: String
-    iban: String
-    bic: String
+  type Attachment {
+    name: String
+    url: String 
   }
 `;
