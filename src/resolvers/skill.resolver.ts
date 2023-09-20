@@ -1,27 +1,16 @@
 import {
   MutationAddSkillArgs,
+  MutationDeleteSkillArgs,
   MutationUpdateSkillArgs,
   QuerySkillArgs,
+  QuerySuggestSkillsArgs,
   ResolversParentTypes,
-} from "@generated/resolvers-types";
-import { Context } from "@helpers/interfaces";
+} from "../generated/resolvers-types.js";
+import { Context } from "../helpers/interfaces.js";
 import { type Skill } from "@models/skill.model.js";
 import redisClient from "../redis.js";
-import { get } from "http";
 import { GraphQLError } from "graphql";
-
-const setJSON = async (path: string, skill: Skill) =>
-  await redisClient.call("JSON.SET", path, "$", JSON.stringify(skill));
-
-const getJSON = async (path: string): Promise<Skill> => {
-  try {
-    const data = (await redisClient.call("JSON.GET", path, "$")) as string;
-    const [skill] = JSON.parse(data);
-    return skill;
-  } catch (err) {
-    throw err;
-  }
-};
+import { getJSON, setJSON } from "./controller.miscl.js";
 
 export default {
   Query: {
@@ -32,9 +21,9 @@ export default {
     ) => {
       const skills_keys = await redisClient.keys("skills:*");
       if (!skills_keys.length) {
-        const skills = await models.Skill.find();
+        const skills = await models.Skill.find<Skill>();
         for (let skill of skills) {
-          await setJSON(`skills:${skill._id}`, skill);
+          await setJSON(`skills:${skill.id}`, skill);
         }
         return skills;
       }
@@ -51,9 +40,9 @@ export default {
       { id }: QuerySkillArgs,
       { models }: Context
     ) => {
-      const skill = getJSON(`skills:${id}`);
+      const skill = await getJSON(`skills:${id}`);
       if (!skill) {
-        const skill = await models.Skill.findById(id);
+        const skill = await models.Skill.findById<Skill>(id);
         if (!skill) {
           throw new GraphQLError("Skill not found");
         }
@@ -62,6 +51,13 @@ export default {
       }
       return skill;
     },
+    suggestSkills: async (
+      parent: ResolversParentTypes,
+      { ids }: QuerySuggestSkillsArgs,
+      { models }: Context
+    ) => {
+      return await models.Skill.find<Skill>();
+    },
   },
   Mutation: {
     addSkill: async (
@@ -69,22 +65,45 @@ export default {
       { name }: MutationAddSkillArgs,
       { models }: Context
     ) => {
-      const skill = await models.Skill.create({ name });
-      await setJSON(`skills:${skill._id}`, skill);
-      return skill;
+      try {
+        const skill = (await models.Skill.create({ name })) as Skill;
+        await setJSON(`skills:${skill.id}`, skill);
+        return skill;
+      } catch (err) {
+        throw new GraphQLError("Could not add a new skill");
+      }
     },
     updateSkill: async (
       parent: ResolversParentTypes,
       { id, name }: MutationUpdateSkillArgs,
       { models }: Context
     ) => {
-      const skill = await models.Skill.findByIdAndUpdate(
+      const skill = await models.Skill.findByIdAndUpdate<Skill>(
         { _id: id },
         { name },
         { new: true }
       );
-      await setJSON(`skills:${skill._id}`, skill);
+      if (!skill) {
+        throw new GraphQLError("Skill not found");
+      }
+      await setJSON(`skills:${skill.id}`, skill);
       return skill;
+    },
+    deleteSkill: async (
+      parent: ResolversParentTypes,
+      { id }: MutationDeleteSkillArgs,
+      { models }: Context
+    ) => {
+      try {
+        const skill = await models.Skill.findByIdAndDelete<Skill>(id);
+        if (!skill) {
+          throw new GraphQLError("Skill not found");
+        }
+        await redisClient.del(`skills:${skill.id}`);
+        return skill;
+      } catch (err) {
+        throw new GraphQLError("Skill not found");
+      }
     },
   },
 };

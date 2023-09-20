@@ -1,4 +1,5 @@
 import categorySchema from "./category.schema.js";
+import healthSchema from "./health.schema.js";
 import misclSchema from "./miscl.schema.js";
 import projectSchema from "./project.schema.js";
 import skillSchema from "./skill.schema.js";
@@ -24,4 +25,5 @@ export default [
   categorySchema,
   projectSchema,
   userSchema,
+  healthSchema,
 ];

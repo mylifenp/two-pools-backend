@@ -1,10 +1,11 @@
+import { BaseContext } from "@apollo/server";
 import { type Request, type Response } from "express";
 import { type RedisPubSub } from "graphql-redis-subscriptions";
-import Redis from "ioredis";
+import { type Redis } from "ioredis";
 import mongoose, { Models } from "mongoose";
 // import { UserTokenInfo } from "helpers/interfaces";
 
-export interface Context {
+export interface Context extends BaseContext {
   req: Request;
   res: Response;
   pubsub: RedisPubSub;

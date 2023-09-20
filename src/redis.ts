@@ -1,4 +1,4 @@
-import Redis from "ioredis";
+import { default as Redis } from "ioredis";
 import config from "./config.js";
 
 const options = {
@@ -9,6 +9,8 @@ const options = {
   namespace: "CACHE",
 };
 
-const redisClient = new Redis(options);
+const redisClient = new Redis.default(options);
+
+export const dropRedis = async () => await redisClient.flushall();
 
 export default redisClient;

@@ -1,8 +1,8 @@
 import { EstimationUnit, ExperienceLevel } from "../helpers/enums.js";
 import { Schema, model, Document } from "mongoose";
-import { type Category } from "./category.model";
-import { type Skill } from "./skill.model";
-import { type User } from "./user.model";
+import { type Category } from "./category.model.js";
+import { type Skill } from "./skill.model.js";
+import { type User } from "./user.model.js";
 
 interface Estimation {
   unit: Record<EstimationUnit, string>;

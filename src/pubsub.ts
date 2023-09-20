@@ -1,4 +1,4 @@
-import Redis from "ioredis";
+import { default as Redis } from "ioredis";
 import { RedisPubSub } from "graphql-redis-subscriptions";
 import config from "./config.js";
 
@@ -23,8 +23,8 @@ const dataReviver = (key: any, value: any) => {
 };
 
 const pubsub = new RedisPubSub({
-  publisher: new Redis(options),
-  subscriber: new Redis(options),
+  publisher: new Redis.default(options),
+  subscriber: new Redis.default(options),
   reviver: dataReviver,
 });
 
