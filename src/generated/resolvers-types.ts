@@ -170,6 +170,9 @@ export type Skill = {
 export type Subscription = {
   __typename?: 'Subscription';
   _?: Maybe<Scalars['Boolean']['output']>;
+  categoryAdded: Category;
+  categoryDeleted: Category;
+  categoryUpdated: Category;
   health?: Maybe<Health>;
   skillAdded: Skill;
   skillDeleted: Skill;
@@ -381,6 +384,9 @@ export type SkillResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   _?: SubscriptionResolver<Maybe<ResolversTypes['Boolean']>, "_", ParentType, ContextType>;
+  categoryAdded?: SubscriptionResolver<ResolversTypes['Category'], "categoryAdded", ParentType, ContextType>;
+  categoryDeleted?: SubscriptionResolver<ResolversTypes['Category'], "categoryDeleted", ParentType, ContextType>;
+  categoryUpdated?: SubscriptionResolver<ResolversTypes['Category'], "categoryUpdated", ParentType, ContextType>;
   health?: SubscriptionResolver<Maybe<ResolversTypes['Health']>, "health", ParentType, ContextType>;
   skillAdded?: SubscriptionResolver<ResolversTypes['Skill'], "skillAdded", ParentType, ContextType>;
   skillDeleted?: SubscriptionResolver<ResolversTypes['Skill'], "skillDeleted", ParentType, ContextType>;

@@ -23,7 +23,7 @@ export default {
       { models, redisClient }: Context
     ) => {
       const skills_keys = await redisClient.keys("skills:*");
-      if (!skills_keys || !skills_keys.length) {
+      if (!skills_keys.length) {
         const skills = await models.Skill.find<Skill>();
         for (let skill of skills) {
           await setJSON(`skills:${skill.id}`, skill);

@@ -9,6 +9,11 @@ export default `#graphql
     updateCategory(id: ID!, name: String!): Category!
     deleteCategory(id: ID!): Category!
   }
+  extend type Subscription {
+    categoryAdded: Category!
+    categoryUpdated: Category!
+    categoryDeleted: Category!
+  }
   type Category {
     id: ID!
     name: String!
