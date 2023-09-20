@@ -1,13 +1,71 @@
 import "dotenv/config";
 
+const {
+  NODE_ENV,
+  PORT,
+  BACKEND_URL,
+  AUTH_PUBLIC_KEY,
+  DATABASE_URI,
+  DATABASE_NAME,
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  TEST_DATABASE_URI,
+  TEST_DATABASE_NAME,
+  TEST_DATABASE_USER,
+  TEST_DATABASE_PASSWORD,
+  REDIS_USERNAME,
+  REDIS_PASSWORD,
+  REDIS_HOST,
+  REDIS_PORT,
+  TEST_REDIS_USERNAME,
+  TEST_REDIS_PASSWORD,
+  TEST_REDIS_HOST,
+  TEST_REDIS_PORT,
+  REDIS_PUBSUB_HOST,
+  REDIS_PUBSUB_PORT,
+} = process.env;
+
+const databaseInfo = () => {
+  if (NODE_ENV === "test") {
+    return {
+      DATABASE_URI: TEST_DATABASE_URI ?? "",
+      DATABASE_NAME: TEST_DATABASE_NAME ?? "",
+      DATABASE_USER: TEST_DATABASE_USER ?? "",
+      DATABASE_PASSWORD: TEST_DATABASE_PASSWORD ?? "",
+    };
+  }
+  return {
+    DATABASE_URI: DATABASE_URI ?? "",
+    DATABASE_NAME: DATABASE_NAME ?? "",
+    DATABASE_USER: DATABASE_USER ?? "",
+    DATABASE_PASSWORD: DATABASE_PASSWORD ?? "",
+  };
+};
+
+const redisInfo = () => {
+  if (NODE_ENV === "test") {
+    return {
+      REDIS_USERNAME: TEST_REDIS_USERNAME ?? "",
+      REDIS_PASSWORD: TEST_REDIS_PASSWORD ?? "",
+      REDIS_HOST: TEST_REDIS_HOST ?? "",
+      REDIS_PORT: TEST_REDIS_PORT ?? "",
+    };
+  }
+  return {
+    REDIS_USERNAME: REDIS_USERNAME ?? "",
+    REDIS_PASSWORD: REDIS_PASSWORD ?? "",
+    REDIS_HOST: REDIS_HOST ?? "",
+    REDIS_PORT: REDIS_PORT ?? "",
+  };
+};
+
 export default {
-  ENV: process.env.NODE_ENV ?? "development",
-  PORT: process.env.PORT ?? 8000,
-  REDIS_HOST: process.env.REDIS_HOST ?? "localhost",
-  REDIS_PORT: process.env.REDIS_PORT ?? 6379,
-  DATABASE_URI: process.env.DATABASE_URI ?? "mongodb://localhost:27017",
-  DATABASE_NAME: process.env.DATABASE_NAME ?? "test",
-  DATABASE_USER: process.env.DATABASE_USER ?? "root",
-  DATABASE_PASSWORD: process.env.DATABASE_PASSWORD ?? "root",
-  AUTH_PUBLIC_KEY: process.env.AUTH_PUBLIC_KEY ?? "",
+  ENV: NODE_ENV ?? "development",
+  PORT: PORT ?? 8000,
+  BACKEND_URL: BACKEND_URL ?? "http://localhost:8000",
+  AUTH_PUBLIC_KEY: AUTH_PUBLIC_KEY ?? "",
+  REDIS_PUBSUB_HOST: REDIS_PUBSUB_HOST ?? "",
+  REDIS_PUBSUB_PORT: REDIS_PUBSUB_PORT ?? "",
+  ...redisInfo(),
+  ...databaseInfo(),
 };

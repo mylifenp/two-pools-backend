@@ -1,12 +1,12 @@
-import cemeteryResolver from "./cemetery.resolver.js";
-import chapterResolver from "./chapter.resolver.js";
-import trusteeResolver from "./trustee.resolver.js";
+import categoryResolver from "./category.resolver.js";
+import healthResolver from "./health.resolver.js";
+import skillResolver from "./skill.resolver.js";
 
 const customScalarResolver = {};
 
 export default [
   customScalarResolver,
-  trusteeResolver,
-  cemeteryResolver,
-  chapterResolver,
+  healthResolver,
+  skillResolver,
+  categoryResolver,
 ];

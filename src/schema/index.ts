@@ -1,7 +1,9 @@
-import cemeterySchema from "./cemetery.schema.js";
-import chapterSchema from "./chapter.schema.js";
+import categorySchema from "./category.schema.js";
+import healthSchema from "./health.schema.js";
 import misclSchema from "./miscl.schema.js";
-import trusteeSchema from "./trustee.schema.js";
+import projectSchema from "./project.schema.js";
+import skillSchema from "./skill.schema.js";
+import userSchema from "./user.schema.js";
 
 const linkSchema = `#graphql
   scalar Date
@@ -19,7 +21,9 @@ const linkSchema = `#graphql
 export default [
   linkSchema,
   misclSchema,
-  trusteeSchema,
-  cemeterySchema,
-  chapterSchema,
+  skillSchema,
+  categorySchema,
+  projectSchema,
+  userSchema,
+  healthSchema,
 ];

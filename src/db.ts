@@ -1,8 +1,5 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
 import config from "./config.js";
 import mongoose, { ConnectOptions } from "mongoose";
-
-let mongod: MongoMemoryServer | null = null;
 
 const options: ConnectOptions = {
   auth: {
@@ -19,28 +16,21 @@ const connectDb = async (): Promise<typeof mongoose> => {
     //   delete converted._id;
     // },
   });
-  if (config.ENV === "test") {
-    mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
-    return mongoose.connect(uri);
-  }
   if (config.ENV === "development") {
     mongoose.set("debug", true);
-    return await mongoose.connect(config.DATABASE_URI, options);
   }
   return await mongoose.connect(config.DATABASE_URI, options);
 };
 
 const dropDb = async () => {
-  if (mongod) {
+  if (config.ENV === "test") {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
-    await mongod.stop();
   }
 };
 
 const dropCollections = async () => {
-  if (mongod) {
+  if (config.ENV === "test") {
     const collections = await mongoose.connection.db.collections();
     for (let collection of collections) {
       await collection.drop();

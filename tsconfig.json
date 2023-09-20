@@ -3,22 +3,24 @@
     "rootDirs": ["src"],
     "outDir": "dist",
     "lib": ["es2020"],
-    "target": "es2022",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "target": "esnext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "skipLibCheck": true,
     "types": ["node"],
     "paths": {
       "@generated/*": ["./src/generated/*"],
-      "@helpers/*": ["./src/helpers/*"],
+      "@helpers/*": ["./src/helpers//*"],
       "@lib/*": ["./src/lib/*"],
       "@models/*": ["./src/models/*"],
       "@resolvers/*": ["./src/resolvers/*"],
       "@schema/*": ["./src/schema/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "./*.ts", "__tests__"]
 }

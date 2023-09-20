@@ -1,11 +1,14 @@
-import Redis from "ioredis";
+import { default as Redis } from "ioredis";
+import { RedisOptions } from "ioredis";
 import { RedisPubSub } from "graphql-redis-subscriptions";
 import config from "./config.js";
+import { PubSubRedisOptions } from "graphql-redis-subscriptions/dist/redis-pubsub.js";
 
-const options = {
-  host: config.REDIS_HOST,
-  port: Number(config.REDIS_PORT),
-  namespace: "PUBSUB",
+const options: RedisOptions = {
+  host: config.REDIS_PUBSUB_HOST,
+  port: Number(config.REDIS_PUBSUB_PORT),
+  enableReadyCheck: true,
+  retryStrategy: (times) => Math.min(times * 50, 2000),
 };
 
 const dataReviver = (key: any, value: any) => {
@@ -20,11 +23,20 @@ const dataReviver = (key: any, value: any) => {
   return value;
 };
 
-const pubsub = new RedisPubSub({
-  publisher: new Redis(options),
-  subscriber: new Redis(options),
+const pubsub_options: PubSubRedisOptions = {
+  connection: options,
+  publisher: new Redis.default(options),
+  subscriber: new Redis.default(options),
   reviver: dataReviver,
-});
+};
+
+// const pubsub = new RedisPubSub({
+//   publisher: new Redis.default(options),
+//   subscriber: new Redis.default(options),
+//   reviver: dataReviver,
+// });
+
+const pubsub = new RedisPubSub(pubsub_options);
 
 export const closeInstance = () => pubsub.close();
 
