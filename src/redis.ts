@@ -1,16 +1,21 @@
-import { default as Redis } from "ioredis";
+// import Redis from "ioredis";
+import { default as Redis, RedisOptions } from "ioredis";
 import config from "./config.js";
 
-const options = {
+const options: RedisOptions = {
   host: config.REDIS_HOST,
   port: Number(config.REDIS_PORT),
   username: config.REDIS_USERNAME,
   password: config.REDIS_PASSWORD,
-  namespace: "CACHE",
+  enableReadyCheck: true,
 };
 
 const redisClient = new Redis.default(options);
 
-export const dropRedis = async () => await redisClient.flushall();
+const dropRedis = async () => await redisClient.flushall();
 
-export default redisClient;
+if (redisClient.status === "close") {
+  redisClient.connect();
+}
+
+export { redisClient, dropRedis };

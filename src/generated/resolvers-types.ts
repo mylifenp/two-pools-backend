@@ -56,6 +56,7 @@ export enum ExperienceLevel {
 
 export type Health = {
   __typename?: 'Health';
+  moreInfo?: Maybe<Scalars['String']['output']>;
   status: Scalars['String']['output'];
 };
 
@@ -126,6 +127,8 @@ export type Project = {
 
 export type Query = {
   __typename?: 'Query';
+  DBHealth: Health;
+  RedisHealth: Health;
   _?: Maybe<Scalars['Boolean']['output']>;
   categories: Array<Category>;
   category: Category;
@@ -167,6 +170,15 @@ export type Skill = {
 export type Subscription = {
   __typename?: 'Subscription';
   _?: Maybe<Scalars['Boolean']['output']>;
+  health?: Maybe<Health>;
+  skillAdded: Skill;
+  skillDeleted: Skill;
+  skillUpdated: Skill;
+};
+
+
+export type SubscriptionSkillUpdatedArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type User = {
@@ -314,6 +326,7 @@ export type EstimationResolvers<ContextType = any, ParentType extends ResolversP
 }>;
 
 export type HealthResolvers<ContextType = any, ParentType extends ResolversParentTypes['Health'] = ResolversParentTypes['Health']> = ResolversObject<{
+  moreInfo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -346,6 +359,8 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  DBHealth?: Resolver<ResolversTypes['Health'], ParentType, ContextType>;
+  RedisHealth?: Resolver<ResolversTypes['Health'], ParentType, ContextType>;
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   categories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
@@ -366,6 +381,10 @@ export type SkillResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   _?: SubscriptionResolver<Maybe<ResolversTypes['Boolean']>, "_", ParentType, ContextType>;
+  health?: SubscriptionResolver<Maybe<ResolversTypes['Health']>, "health", ParentType, ContextType>;
+  skillAdded?: SubscriptionResolver<ResolversTypes['Skill'], "skillAdded", ParentType, ContextType>;
+  skillDeleted?: SubscriptionResolver<ResolversTypes['Skill'], "skillDeleted", ParentType, ContextType>;
+  skillUpdated?: SubscriptionResolver<ResolversTypes['Skill'], "skillUpdated", ParentType, ContextType, RequireFields<SubscriptionSkillUpdatedArgs, 'id'>>;
 }>;
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{

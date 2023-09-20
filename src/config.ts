@@ -21,6 +21,8 @@ const {
   TEST_REDIS_PASSWORD,
   TEST_REDIS_HOST,
   TEST_REDIS_PORT,
+  REDIS_PUBSUB_HOST,
+  REDIS_PUBSUB_PORT,
 } = process.env;
 
 const databaseInfo = () => {
@@ -62,6 +64,8 @@ export default {
   PORT: PORT ?? 8000,
   BACKEND_URL: BACKEND_URL ?? "http://localhost:8000",
   AUTH_PUBLIC_KEY: AUTH_PUBLIC_KEY ?? "",
+  REDIS_PUBSUB_HOST: REDIS_PUBSUB_HOST ?? "",
+  REDIS_PUBSUB_PORT: REDIS_PUBSUB_PORT ?? "",
   ...redisInfo(),
   ...databaseInfo(),
 };

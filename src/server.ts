@@ -10,22 +10,9 @@ import resolvers from "./resolvers/index.js";
 import typeDefs from "./schema/index.js";
 import config from "./config.js";
 import { Context } from "@helpers/interfaces.js";
-import { connectDb } from "./db.js";
-
-const shutdown = function () {
-  // clean up your resources and exit
-  console.log("cleaning up before shutdown");
-  process.exit();
-};
 
 export async function startServer(app: Express) {
   const httpServer = http.createServer(app);
-  const db = await connectDb();
-
-  if (!db) {
-    console.log("connection could not be established");
-    shutdown();
-  }
 
   const schema = makeExecutableSchema({
     typeDefs,
@@ -69,5 +56,5 @@ export async function startServer(app: Express) {
 
   // await server.start();
 
-  return { server, httpServer, db };
+  return { server, httpServer };
 }

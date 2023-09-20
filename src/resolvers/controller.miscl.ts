@@ -1,4 +1,4 @@
-import redisClient from "../redis.js";
+import { redisClient } from "../redis.js";
 
 async function setJSON<T, _>(path: string, skill: T): Promise<void> {
   await redisClient.call("JSON.SET", path, "$", JSON.stringify(skill));

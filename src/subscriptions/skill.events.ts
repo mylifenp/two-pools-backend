@@ -1,0 +1,3 @@
+export const SKILL_UPDATED = "SKILL_UPDATED";
+export const SKILL_DELETED = "SKILL_DELETED";
+export const SKILL_ADDED = "SKILL_ADDED";

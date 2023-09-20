@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">2.56% </span>
+                <span class="strong">53.84% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/39</span>
+                <span class='fraction'>21/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>4/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">16.66% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/6</span>
+                <span class='fraction'>3/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">2.63% </span>
+                <span class="strong">55.26% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/38</span>
+                <span class='fraction'>21/38</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -192,36 +192,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,10 +239,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -291,7 +291,6 @@
 } from "../generated/resolvers-types.js";
 import { Context } from "../helpers/interfaces.js";
 import { type Skill } from "@models/skill.model.js";
-import redisClient from "../redis.js";
 import { GraphQLError } from "graphql";
 import { getJSON, setJSON } from "./controller.miscl.js";
 &nbsp;
@@ -303,34 +302,35 @@ export default {
       { models, redisClient }: Context
     ) =&gt; {
       const skills_keys = await redisClient.keys("skills:*");
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!skills_keys.length) {</span>
-        const skills = <span class="cstat-no" title="statement not covered" >await models.Skill.find&lt;Skill&gt;();</span>
-<span class="cstat-no" title="statement not covered" >        for (let skill of skills) {</span>
+      if (!skills_keys || !skills_keys.length) {
+        const skills = await models.Skill.find&lt;Skill&gt;();
+        for (let skill of skills) {
 <span class="cstat-no" title="statement not covered" >          await setJSON(`skills:${skill.id}`, skill);</span>
         }
-<span class="cstat-no" title="statement not covered" >        return skills;</span>
+        return skills;
       }
-      const cached_skills = <span class="cstat-no" title="statement not covered" >[];</span>
-<span class="cstat-no" title="statement not covered" >      for (let key of skills_keys) {</span>
-        const skill = <span class="cstat-no" title="statement not covered" >await getJSON(key);</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!skill) <span class="cstat-no" title="statement not covered" >continue;</span></span>
-<span class="cstat-no" title="statement not covered" >        cached_skills.push(skill);</span>
+      const cached_skills = [];
+      for (let key of skills_keys) {
+        const skill = await getJSON(key);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!skill) <span class="cstat-no" title="statement not covered" >continue;</span>
+        cached_skills.push(skill);
       }
-<span class="cstat-no" title="statement not covered" >      return cached_skills;</span>
+      // console.log("cached_skills", cached_skills);
+      return cached_skills;
     },
-    skill: <span class="fstat-no" title="function not covered" >async </span>(
+    skill: async (
       parent: ResolversParentTypes,
       { id }: QuerySkillArgs,
       { models }: Context
     ) =&gt; {
-      const skill = <span class="cstat-no" title="statement not covered" >await getJSON(`skills:${id}`);</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!skill) {</span>
-        const skill = <span class="cstat-no" title="statement not covered" >await models.Skill.findById&lt;Skill&gt;(id);</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!skill) {</span>
+      const skill = await getJSON(`skills:${id}`);
+      if (!skill) {
+        const skill = await models.Skill.findById&lt;Skill&gt;(id);
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!skill) {
 <span class="cstat-no" title="statement not covered" >          throw new GraphQLError("Skill not found");</span>
         }
-<span class="cstat-no" title="statement not covered" >        await setJSON(`skills:${id}`, skill);</span>
-<span class="cstat-no" title="statement not covered" >        return skill;</span>
+        await setJSON(`skills:${id}`, skill);
+        return skill;
       }
 <span class="cstat-no" title="statement not covered" >      return skill;</span>
     },
@@ -343,15 +343,15 @@ export default {
     },
   },
   Mutation: {
-    addSkill: <span class="fstat-no" title="function not covered" >async </span>(
+    addSkill: async (
       parent: ResolversParentTypes,
       { name }: MutationAddSkillArgs,
       { models }: Context
     ) =&gt; {
-<span class="cstat-no" title="statement not covered" >      try {</span>
-        const skill = (<span class="cstat-no" title="statement not covered" >await models.Skill.create({ name }))</span> as Skill;
-<span class="cstat-no" title="statement not covered" >        await setJSON(`skills:${skill.id}`, skill);</span>
-<span class="cstat-no" title="statement not covered" >        return skill;</span>
+      try {
+        const skill = (await models.Skill.create({ name })) as Skill;
+        await setJSON(`skills:${skill.id}`, skill);
+        return skill;
       } catch (err) {
 <span class="cstat-no" title="statement not covered" >        throw new GraphQLError("Could not add a new skill");</span>
       }
@@ -375,7 +375,7 @@ export default {
     deleteSkill: <span class="fstat-no" title="function not covered" >async </span>(
       parent: ResolversParentTypes,
       { id }: MutationDeleteSkillArgs,
-      { models }: Context
+      { models, redisClient }: Context
     ) =&gt; {
 <span class="cstat-no" title="statement not covered" >      try {</span>
         const skill = <span class="cstat-no" title="statement not covered" >await models.Skill.findByIdAndDelete&lt;Skill&gt;(id);</span>
@@ -397,7 +397,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-09-20T08:14:18.728Z
+                at 2023-09-20T14:43:43.030Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

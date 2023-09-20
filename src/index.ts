@@ -3,11 +3,12 @@ import express from "express";
 import cors from "cors";
 import parser from "body-parser";
 import config from "./config.js";
-import redisClient from "./redis.js";
+import { redisClient } from "./redis.js";
 import models from "./models/index.js";
 import authenticateToken from "./lib/authentication.js";
 import pubsub from "./pubsub.js";
 import { startServer } from "./server.js";
+import { connectDb } from "./db.js";
 
 const { PORT, BACKEND_URL } = config;
 
@@ -19,8 +20,14 @@ const shutdown = function () {
 
 async function main() {
   const app = express();
-  const { server, httpServer, db } = await startServer(app);
+  const db = await connectDb();
 
+  if (!db) {
+    console.log("connection could not be established");
+    shutdown();
+  }
+
+  const { server, httpServer } = await startServer(app);
   await server.start();
   app.use(
     "/graphql",

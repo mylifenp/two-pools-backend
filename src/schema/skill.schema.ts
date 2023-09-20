@@ -9,6 +9,11 @@ export default `#graphql
     updateSkill(id: ID!, name: String!): Skill!
     deleteSkill(id: ID!): Skill!
   }
+  extend type Subscription {
+    skillAdded: Skill!
+    skillUpdated(id: ID!): Skill!
+    skillDeleted: Skill!
+  }
   type Skill {
     id: ID!
     name: String!
