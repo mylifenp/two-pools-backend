@@ -22,8 +22,8 @@ export default {
       args: any,
       { models, redisClient }: Context
     ) => {
-      const skills_keys = await redisClient.keys("skills:*");
-      if (!skills_keys.length) {
+      const skill_keys = await redisClient.keys("skills:*");
+      if (!skill_keys.length) {
         const skills = await models.Skill.find<Skill>();
         for (let skill of skills) {
           await setJSON(`skills:${skill.id}`, skill);
@@ -31,7 +31,7 @@ export default {
         return skills;
       }
       const cached_skills = [];
-      for (let key of skills_keys) {
+      for (let key of skill_keys) {
         const skill = await getJSON(key);
         if (!skill) continue;
         cached_skills.push(skill);

@@ -1,5 +1,6 @@
 import categoryResolver from "./category.resolver.js";
 import healthResolver from "./health.resolver.js";
+import projectResolver from "./project.resolver.js";
 import skillResolver from "./skill.resolver.js";
 
 const customScalarResolver = {};
@@ -9,4 +10,5 @@ export default [
   healthResolver,
   skillResolver,
   categoryResolver,
+  projectResolver,
 ];

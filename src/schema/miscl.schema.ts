@@ -18,7 +18,15 @@ export default `#graphql
     unit: EstimationUnit
     value: Float
   }
+  input EstimationInput {
+    unit: EstimationUnit
+    value: Float
+  }
   type Attachment {
+    name: String
+    url: String 
+  }
+  input AttachmentInput {
     name: String
     url: String 
   }

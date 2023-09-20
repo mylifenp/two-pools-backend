@@ -23,6 +23,11 @@ export type Attachment = {
   url?: Maybe<Scalars['String']['output']>;
 };
 
+export type AttachmentInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Category = {
   __typename?: 'Category';
   createdAt?: Maybe<Scalars['String']['output']>;
@@ -35,6 +40,11 @@ export type Estimation = {
   __typename?: 'Estimation';
   unit?: Maybe<EstimationUnit>;
   value?: Maybe<Scalars['Float']['output']>;
+};
+
+export type EstimationInput = {
+  unit?: InputMaybe<EstimationUnit>;
+  value?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export enum EstimationUnit {
@@ -64,11 +74,14 @@ export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']['output']>;
   addCategory: Category;
+  addProject: Project;
   addSkill: Skill;
   deleteCategory: Category;
+  deleteProject: Project;
   deleteSkill: Skill;
   health: Health;
   updateCategory: Category;
+  updateProject: Project;
   updateSkill: Skill;
 };
 
@@ -78,12 +91,22 @@ export type MutationAddCategoryArgs = {
 };
 
 
+export type MutationAddProjectArgs = {
+  input?: InputMaybe<ProjectInput>;
+};
+
+
 export type MutationAddSkillArgs = {
   name: Scalars['String']['input'];
 };
 
 
 export type MutationDeleteCategoryArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteProjectArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -101,6 +124,12 @@ export type MutationHealthArgs = {
 export type MutationUpdateCategoryArgs = {
   id: Scalars['ID']['input'];
   name: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateProjectArgs = {
+  id: Scalars['ID']['input'];
+  input?: InputMaybe<ProjectInput>;
 };
 
 
@@ -125,6 +154,14 @@ export type Project = {
   user: User;
 };
 
+export type ProjectInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  estimation?: InputMaybe<EstimationInput>;
+  experience_level?: InputMaybe<ExperienceLevel>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   DBHealth: Health;
@@ -133,6 +170,8 @@ export type Query = {
   categories: Array<Category>;
   category: Category;
   health: Health;
+  project: Project;
+  projects: Array<Project>;
   skill: Skill;
   skills: Array<Skill>;
   suggestCategories: Array<Maybe<Category>>;
@@ -141,6 +180,11 @@ export type Query = {
 
 
 export type QueryCategoryArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryProjectArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -174,9 +218,22 @@ export type Subscription = {
   categoryDeleted: Category;
   categoryUpdated: Category;
   health?: Maybe<Health>;
+  projectAdded: Project;
+  projectDeleted: Project;
+  projectUpdated: Project;
   skillAdded: Skill;
   skillDeleted: Skill;
   skillUpdated: Skill;
+};
+
+
+export type SubscriptionProjectDeletedArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type SubscriptionProjectUpdatedArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -267,10 +324,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Attachment: ResolverTypeWrapper<Attachment>;
+  AttachmentInput: AttachmentInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Category: ResolverTypeWrapper<Category>;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   Estimation: ResolverTypeWrapper<Estimation>;
+  EstimationInput: EstimationInput;
   EstimationUnit: EstimationUnit;
   ExperienceLevel: ExperienceLevel;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
@@ -278,6 +337,7 @@ export type ResolversTypes = ResolversObject<{
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Project: ResolverTypeWrapper<Project>;
+  ProjectInput: ProjectInput;
   Query: ResolverTypeWrapper<{}>;
   Skill: ResolverTypeWrapper<Skill>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -288,15 +348,18 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Attachment: Attachment;
+  AttachmentInput: AttachmentInput;
   Boolean: Scalars['Boolean']['output'];
   Category: Category;
   Date: Scalars['Date']['output'];
   Estimation: Estimation;
+  EstimationInput: EstimationInput;
   Float: Scalars['Float']['output'];
   Health: Health;
   ID: Scalars['ID']['output'];
   Mutation: {};
   Project: Project;
+  ProjectInput: ProjectInput;
   Query: {};
   Skill: Skill;
   String: Scalars['String']['output'];
@@ -337,11 +400,14 @@ export type HealthResolvers<ContextType = any, ParentType extends ResolversParen
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   addCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationAddCategoryArgs, 'name'>>;
+  addProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, Partial<MutationAddProjectArgs>>;
   addSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationAddSkillArgs, 'name'>>;
   deleteCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationDeleteCategoryArgs, 'id'>>;
+  deleteProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>;
   deleteSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationDeleteSkillArgs, 'id'>>;
   health?: Resolver<ResolversTypes['Health'], ParentType, ContextType, RequireFields<MutationHealthArgs, 'status'>>;
   updateCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'id' | 'name'>>;
+  updateProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>;
   updateSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationUpdateSkillArgs, 'id' | 'name'>>;
 }>;
 
@@ -368,6 +434,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   categories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
   health?: Resolver<ResolversTypes['Health'], ParentType, ContextType>;
+  project?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>;
+  projects?: Resolver<Array<ResolversTypes['Project']>, ParentType, ContextType>;
   skill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<QuerySkillArgs, 'id'>>;
   skills?: Resolver<Array<ResolversTypes['Skill']>, ParentType, ContextType>;
   suggestCategories?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType, Partial<QuerySuggestCategoriesArgs>>;
@@ -388,6 +456,9 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
   categoryDeleted?: SubscriptionResolver<ResolversTypes['Category'], "categoryDeleted", ParentType, ContextType>;
   categoryUpdated?: SubscriptionResolver<ResolversTypes['Category'], "categoryUpdated", ParentType, ContextType>;
   health?: SubscriptionResolver<Maybe<ResolversTypes['Health']>, "health", ParentType, ContextType>;
+  projectAdded?: SubscriptionResolver<ResolversTypes['Project'], "projectAdded", ParentType, ContextType>;
+  projectDeleted?: SubscriptionResolver<ResolversTypes['Project'], "projectDeleted", ParentType, ContextType, RequireFields<SubscriptionProjectDeletedArgs, 'id'>>;
+  projectUpdated?: SubscriptionResolver<ResolversTypes['Project'], "projectUpdated", ParentType, ContextType, RequireFields<SubscriptionProjectUpdatedArgs, 'id'>>;
   skillAdded?: SubscriptionResolver<ResolversTypes['Skill'], "skillAdded", ParentType, ContextType>;
   skillDeleted?: SubscriptionResolver<ResolversTypes['Skill'], "skillDeleted", ParentType, ContextType>;
   skillUpdated?: SubscriptionResolver<ResolversTypes['Skill'], "skillUpdated", ParentType, ContextType, RequireFields<SubscriptionSkillUpdatedArgs, 'id'>>;
