@@ -138,6 +138,13 @@ export type MutationUpdateSkillArgs = {
   name: Scalars['String']['input'];
 };
 
+export type OrganizationRoles = {
+  __typename?: 'OrganizationRoles';
+  name?: Maybe<Scalars['String']['output']>;
+  org_id?: Maybe<Scalars['String']['output']>;
+  roles?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
 export type Project = {
   __typename?: 'Project';
   attachments: Array<Maybe<Attachment>>;
@@ -179,6 +186,7 @@ export type Query = {
   skills: Array<Skill>;
   suggestCategories: Array<Maybe<Category>>;
   suggestSkills: Array<Maybe<Skill>>;
+  userInfo: User;
 };
 
 
@@ -246,12 +254,14 @@ export type SubscriptionSkillUpdatedArgs = {
 
 export type User = {
   __typename?: 'User';
-  createdAt?: Maybe<Scalars['String']['output']>;
-  email: Scalars['String']['output'];
+  email?: Maybe<Scalars['String']['output']>;
+  family_name?: Maybe<Scalars['String']['output']>;
+  given_name?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  oidc_id: Scalars['String']['output'];
-  profile_url?: Maybe<Scalars['String']['output']>;
-  updatedAt?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  org_roles?: Maybe<Array<Maybe<OrganizationRoles>>>;
+  organization?: Maybe<Scalars['String']['output']>;
+  preferred_username?: Maybe<Scalars['String']['output']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -339,6 +349,7 @@ export type ResolversTypes = ResolversObject<{
   Health: ResolverTypeWrapper<Health>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  OrganizationRoles: ResolverTypeWrapper<OrganizationRoles>;
   Project: ResolverTypeWrapper<Project>;
   ProjectInput: ProjectInput;
   Query: ResolverTypeWrapper<{}>;
@@ -361,6 +372,7 @@ export type ResolversParentTypes = ResolversObject<{
   Health: Health;
   ID: Scalars['ID']['output'];
   Mutation: {};
+  OrganizationRoles: OrganizationRoles;
   Project: Project;
   ProjectInput: ProjectInput;
   Query: {};
@@ -414,6 +426,13 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationUpdateSkillArgs, 'id' | 'name'>>;
 }>;
 
+export type OrganizationRolesResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrganizationRoles'] = ResolversParentTypes['OrganizationRoles']> = ResolversObject<{
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  org_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  roles?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ProjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = ResolversObject<{
   attachments?: Resolver<Array<Maybe<ResolversTypes['Attachment']>>, ParentType, ContextType>;
   categories?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType>;
@@ -443,6 +462,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   skills?: Resolver<Array<ResolversTypes['Skill']>, ParentType, ContextType>;
   suggestCategories?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType, Partial<QuerySuggestCategoriesArgs>>;
   suggestSkills?: Resolver<Array<Maybe<ResolversTypes['Skill']>>, ParentType, ContextType, Partial<QuerySuggestSkillsArgs>>;
+  userInfo?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;
 
 export type SkillResolvers<ContextType = any, ParentType extends ResolversParentTypes['Skill'] = ResolversParentTypes['Skill']> = ResolversObject<{
@@ -468,12 +488,14 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 }>;
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  family_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  given_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  oidc_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  profile_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  org_roles?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrganizationRoles']>>>, ParentType, ContextType>;
+  organization?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  preferred_username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -484,6 +506,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Estimation?: EstimationResolvers<ContextType>;
   Health?: HealthResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  OrganizationRoles?: OrganizationRolesResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Skill?: SkillResolvers<ContextType>;

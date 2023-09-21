@@ -9,13 +9,22 @@ import {
   SubscriptionProjectUpdatedArgs,
 } from "@generated/resolvers-types.js";
 import { composeResolvers } from "@graphql-tools/resolvers-composition";
-import { Context } from "@helpers/interfaces.js";
+import { Context, UserTokenInfo } from "@helpers/interfaces.js";
 import { getJSON, setJSON } from "./controller.miscl.js";
 import { GraphQLError } from "graphql";
 import pubsub from "../pubsub.js";
 import { EVENTS } from "../subscriptions/index.js";
 import { withFilter } from "graphql-subscriptions";
 import { isAuthenticated } from "../lib/authentication.js";
+import { Models } from "mongoose";
+
+const getUser = async (me: UserTokenInfo, models: Models) => {
+  const filter = { email: me.email };
+  return await models.User.findOneAndUpdate(filter, me, {
+    new: true,
+    upsert: true,
+  });
+};
 
 const resolvers = {
   Query: {
@@ -61,30 +70,46 @@ const resolvers = {
     addProject: async (
       parent: ResolversParentTypes,
       { input }: MutationAddProjectArgs,
-      { models }: Context
+      { models, me }: Context
     ) => {
       try {
-        const project = (await models.Project.create(input)) as Project;
+        if (!me) throw new GraphQLError("Not authenticated");
+        const user = await getUser(me, models);
+        const project = (await models.Project.create({
+          ...input,
+          user,
+        })) as Project;
         await setJSON(`projects:${project.id}`, project);
         pubsub.publish(EVENTS.PROJECT.PROJECT_ADDED, { projectAdded: project });
         return project;
       } catch (err) {
+        console.log("adding project", err);
         throw new GraphQLError("Could not add project");
       }
     },
     updateProject: async (
       parent: ResolversParentTypes,
       { id, input }: MutationUpdateProjectArgs,
-      { models }: Context
+      { models, me }: Context
     ) => {
+      if (!me) throw new GraphQLError("Not authenticated");
+      const user = await getUser(me, models);
+      const _project = await models.Project.findById(id);
+      if (!_project) {
+        throw new GraphQLError("Project not found");
+      }
+      if (_project.user.email !== me.email) {
+        throw new GraphQLError("Not authorized to change this project");
+      }
       const project = await models.Project.findByIdAndUpdate<Project>(
         { _id: id },
-        { $set: { ...input } },
+        { $set: { ...input, user } },
         { new: true }
       );
       if (!project) {
         throw new GraphQLError("Project could not be updated");
       }
+
       await setJSON(`projects:${project.id}`, project);
       pubsub.publish(`${EVENTS.PROJECT.PROJECT_UPDATED}.${id}`, {
         projectUpdated: project,
@@ -133,6 +158,18 @@ const resolvers = {
         }
       ),
     },
+  },
+  Project: {
+    user: async (parent: Project, args: any, { models }: Context) =>
+      await models.User.findById(parent.user),
+    categories: async (parent: Project, args: any, { models }: Context) =>
+      await models.Category.find({
+        _id: { $in: parent.categories },
+      }),
+    required_skills: async (parent: Project, args: any, { models }: Context) =>
+      await models.Skill.find({
+        _id: { $in: parent.required_skills },
+      }),
   },
 };
 

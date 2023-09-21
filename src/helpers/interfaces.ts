@@ -25,7 +25,7 @@ export interface UserTokenInfo {
   organization: string;
 }
 
-interface OrgRoles {
+export interface OrgRoles {
   [key: string]: {
     roles: string[];
     name: string;
