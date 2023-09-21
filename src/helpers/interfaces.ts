@@ -22,6 +22,7 @@ export interface UserTokenInfo {
   given_name: string;
   family_name: string;
   org_roles: OrgRoles | undefined;
+  organization: string;
 }
 
 interface OrgRoles {

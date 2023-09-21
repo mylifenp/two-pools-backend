@@ -14,8 +14,10 @@ import { GraphQLError } from "graphql";
 import { getJSON, setJSON } from "./controller.miscl.js";
 import pubsub from "../pubsub.js";
 import { EVENTS } from "../subscriptions/index.js";
+import { hasRole, isAuthenticated } from "../lib/authentication.js";
+import { composeResolvers } from "@graphql-tools/resolvers-composition";
 
-export default {
+const resolvers = {
   Query: {
     skills: async (
       parent: ResolversParentTypes,
@@ -141,3 +143,16 @@ export default {
     },
   },
 };
+
+const resolverComposition = {
+  // "Query.skills": [isAuthenticated(), hasRole("admin")],
+  "Query.skill": [isAuthenticated()],
+  "Mutation.addSkill": [isAuthenticated()],
+  "Mutation.updateSkill": [isAuthenticated()],
+  "Mutation.deleteSkill": [isAuthenticated()],
+  "Subscription.skillAdded": [isAuthenticated()],
+  "Subscription.skillUpdated": [isAuthenticated()],
+  "Subscription.skillDeleted": [isAuthenticated()],
+};
+
+export default composeResolvers(resolvers, resolverComposition);

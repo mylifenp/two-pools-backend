@@ -155,10 +155,13 @@ export type Project = {
 };
 
 export type ProjectInput = {
+  attachments?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  categories?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   description?: InputMaybe<Scalars['String']['input']>;
   estimation?: InputMaybe<EstimationInput>;
   experience_level?: InputMaybe<ExperienceLevel>;
   location?: InputMaybe<Scalars['String']['input']>;
+  required_skills?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   title?: InputMaybe<Scalars['String']['input']>;
 };
 

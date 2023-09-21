@@ -8,14 +8,16 @@ import {
   SubscriptionProjectDeletedArgs,
   SubscriptionProjectUpdatedArgs,
 } from "@generated/resolvers-types.js";
+import { composeResolvers } from "@graphql-tools/resolvers-composition";
 import { Context } from "@helpers/interfaces.js";
 import { getJSON, setJSON } from "./controller.miscl.js";
 import { GraphQLError } from "graphql";
 import pubsub from "../pubsub.js";
 import { EVENTS } from "../subscriptions/index.js";
 import { withFilter } from "graphql-subscriptions";
+import { isAuthenticated } from "../lib/authentication.js";
 
-export default {
+const resolvers = {
   Query: {
     projects: async (
       parent: ResolversParentTypes,
@@ -133,3 +135,9 @@ export default {
     },
   },
 };
+
+const resolverComposition = {
+  "Mutation.addProject": [isAuthenticated()],
+};
+
+export default composeResolvers(resolvers, resolverComposition);
