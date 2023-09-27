@@ -146,6 +146,7 @@ const resolvers = {
 
 const resolverComposition = {
   // "Query.skills": [isAuthenticated(), hasRole("admin")],
+  "Query.skills": [isAuthenticated()],
   "Query.skill": [isAuthenticated()],
   "Mutation.addSkill": [isAuthenticated()],
   "Mutation.updateSkill": [isAuthenticated()],
