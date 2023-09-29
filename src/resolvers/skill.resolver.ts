@@ -14,7 +14,11 @@ import { GraphQLError } from "graphql";
 import { getJSON, setJSON } from "./controller.miscl.js";
 import pubsub from "../pubsub.js";
 import { EVENTS } from "../subscriptions/index.js";
-import { hasRole, isAuthenticated } from "../lib/authentication.js";
+import {
+  hasRole,
+  isAuthenticated,
+  // isSubscriptionAuthenticated,
+} from "../lib/authentication.js";
 import { composeResolvers } from "@graphql-tools/resolvers-composition";
 
 const resolvers = {
@@ -125,10 +129,7 @@ const resolvers = {
     skillAdded: {
       subscribe: withFilter(
         () => pubsub.asyncIterator(EVENTS.SKILL.SKILL_ADDED),
-        (payload, variables) => {
-          console.log("payload", payload, "variables", variables);
-          return true;
-        }
+        (payload, variables) => true
       ),
     },
     skillUpdated: {
@@ -146,14 +147,14 @@ const resolvers = {
 
 const resolverComposition = {
   // "Query.skills": [isAuthenticated(), hasRole("admin")],
-  "Query.skills": [isAuthenticated()],
-  "Query.skill": [isAuthenticated()],
+  // "Query.skills": [isAuthenticated()],
+  // "Query.skill": [isAuthenticated()],
   "Mutation.addSkill": [isAuthenticated()],
   "Mutation.updateSkill": [isAuthenticated()],
   "Mutation.deleteSkill": [isAuthenticated()],
-  "Subscription.skillAdded": [isAuthenticated()],
-  "Subscription.skillUpdated": [isAuthenticated()],
-  "Subscription.skillDeleted": [isAuthenticated()],
+  // "Subscription.skillAdded": [isSubscriptionAuthenticated()],
+  // "Subscription.skillUpdated": [isSubscriptionAuthenticated()],
+  // "Subscription.skillDeleted": [isSubscriptionAuthenticated()],
 };
 
 export default composeResolvers(resolvers, resolverComposition);

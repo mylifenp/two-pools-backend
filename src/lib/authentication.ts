@@ -12,18 +12,37 @@ ${config.AUTH_PUBLIC_KEY}
 -----END PUBLIC KEY-----
 `;
 
-// const unknownUser = {
-//   name: "Unknown User",
-//   email_verified: true,
-//   preferred_username: "unknown",
-//   email: "unknown@test.de",
-//   org_roles: {},
-//   given_name: "Unknown",
-//   family_name: "User",
-//   organization: "default",
-// };
-
 const removeBearer = (token: string) => token.replace("Bearer ", "");
+export const validateToken = (token: string) => {
+  return jwt.verify(token, pemCert, { algorithms: ["RS256"] });
+};
+
+export const isTokenValid = (
+  params: Readonly<Record<string, unknown> | undefined>
+) => {
+  const access_token = params?.access_token as string;
+  const id_token = params?.id_token as string;
+  if (!access_token || !id_token) {
+    return false;
+  }
+  try {
+    const valid = validateToken(removeBearer(id_token));
+    if (!valid) {
+      return false;
+    }
+    const tokenInfo = validateToken(removeBearer(id_token)) as JwtPayload;
+    if (!tokenInfo) {
+      return false;
+    }
+    const { email_verified } = tokenInfo;
+    if (!email_verified) {
+      return false;
+    }
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
 
 export default function authenticateToken(req: Request) {
   const access_token = req.headers.access_token as string;
@@ -34,14 +53,6 @@ export default function authenticateToken(req: Request) {
     return undefined;
   }
 
-  try {
-    validateToken(removeBearer(access_token)) as JwtPayload;
-  } catch (err) {
-    if (err instanceof jwt.TokenExpiredError) {
-      throw authenticationErrors("Token expired");
-    }
-    throw authenticationErrors("The provided token could not be verified");
-  }
   try {
     const tokenInfo = validateToken(removeBearer(id_token)) as JwtPayload;
     const {
@@ -64,13 +75,18 @@ export default function authenticateToken(req: Request) {
       organization,
     };
   } catch (err) {
+    if (err instanceof jwt.TokenExpiredError) {
+      throw authenticationErrors("Token expired");
+    }
     throw authenticationErrors("Token could not be verified");
   }
 }
 
-export const validateToken = (token: string) => {
-  return jwt.verify(token, pemCert, { algorithms: ["RS256"] });
-};
+// export const isSubscriptionAuthenticated =
+//   () => (next: any) => (ctx: WsContext) => {
+//     console.log("ctx", ctx.connectionParams);
+//     throw new GraphQLError("You are not authenticated");
+//   };
 
 export const isAuthenticated =
   () =>
@@ -89,16 +105,16 @@ export const hasRole =
   (parent: ResolversParentTypes, args: any, context: Context) => {
     const { me } = context;
     if (!me) {
-      throw new GraphQLError("You are not authenticated");
+      throw authenticationErrors("You are not authenticated");
     }
     const { org_roles, organization } = me;
     const org = org_roles?.[organization];
     if (!org) {
-      throw new GraphQLError("You are not authorized");
+      throw authenticationErrors("You are not authorized");
     }
     const { roles } = org;
     if (!roles.includes(role)) {
-      throw new GraphQLError("You are not authorized");
+      throw authenticationErrors("You are not authorized");
     }
 
     return next(parent, args, context);

@@ -31,3 +31,8 @@ export interface OrgRoles {
     name: string;
   };
 }
+
+export interface WsConnectionParams {
+  access_token: string;
+  id_token: string;
+}
