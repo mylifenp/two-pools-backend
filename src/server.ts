@@ -29,7 +29,10 @@ export async function startServer(app: Express) {
   const serverCleanup = useServer(
     {
       schema,
-      onConnect: async (ctx) => isTokenValid(ctx.connectionParams),
+      onConnect: async (ctx) => {
+        console.warn("ctx.connectionParams", ctx.connectionParams);
+        return isTokenValid(ctx.connectionParams);
+      },
       onSubscribe: async (ctx) => {
         if (!isTokenValid(ctx.connectionParams)) {
           return ctx.extra.socket.close(
@@ -80,7 +83,8 @@ export async function startServer(app: Express) {
         return { message: "Internal server error" };
       }
       if (unwrapResolverError(error) instanceof Error) {
-        return { message: "Internal server error 111" };
+        console.log("error", unwrapResolverError(error));
+        return { message: "Internal server error" };
       }
       return formattedError;
     },

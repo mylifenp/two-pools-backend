@@ -72,11 +72,11 @@ const resolvers = {
   Mutation: {
     addSkill: async (
       parent: ResolversParentTypes,
-      { name }: MutationAddSkillArgs,
+      { input }: MutationAddSkillArgs,
       { models }: Context
     ) => {
       try {
-        const skill = (await models.Skill.create({ name })) as Skill;
+        const skill = (await models.Skill.create({ ...input })) as Skill;
         await setJSON(`skills:${skill.id}`, skill);
         pubsub.publish(EVENTS.SKILL.SKILL_ADDED, {
           skillAdded: skill,
@@ -88,12 +88,12 @@ const resolvers = {
     },
     updateSkill: async (
       parent: ResolversParentTypes,
-      { id, name }: MutationUpdateSkillArgs,
+      { id, input }: MutationUpdateSkillArgs,
       { models }: Context
     ) => {
       const skill = await models.Skill.findByIdAndUpdate<Skill>(
         { _id: id },
-        { name },
+        { ...input },
         { new: true }
       );
       if (!skill) {
@@ -152,9 +152,6 @@ const resolverComposition = {
   "Mutation.addSkill": [isAuthenticated()],
   "Mutation.updateSkill": [isAuthenticated()],
   "Mutation.deleteSkill": [isAuthenticated()],
-  // "Subscription.skillAdded": [isSubscriptionAuthenticated()],
-  // "Subscription.skillUpdated": [isSubscriptionAuthenticated()],
-  // "Subscription.skillDeleted": [isSubscriptionAuthenticated()],
 };
 
 export default composeResolvers(resolvers, resolverComposition);

@@ -5,8 +5,8 @@ export default `#graphql
     suggestSkills(ids: [ID]): [Skill]!
   }
   extend type Mutation {
-    addSkill(name: String!): Skill!
-    updateSkill(id: ID!, name: String!): Skill!
+    addSkill(input: SkillInput!): Skill!
+    updateSkill(id: ID!, input: SkillInput!): Skill!
     deleteSkill(id: ID!): Skill!
   }
   extend type Subscription {
@@ -19,5 +19,8 @@ export default `#graphql
     name: String!
     createdAt: Date!
     updatedAt: Date!
+  }
+  input SkillInput {
+    name: String!
   }
 `;

@@ -97,7 +97,7 @@ export type MutationAddProjectArgs = {
 
 
 export type MutationAddSkillArgs = {
-  name: Scalars['String']['input'];
+  input: SkillInput;
 };
 
 
@@ -135,7 +135,7 @@ export type MutationUpdateProjectArgs = {
 
 export type MutationUpdateSkillArgs = {
   id: Scalars['ID']['input'];
-  name: Scalars['String']['input'];
+  input: SkillInput;
 };
 
 export type OrganizationRoles = {
@@ -220,6 +220,10 @@ export type Skill = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
+};
+
+export type SkillInput = {
+  name: Scalars['String']['input'];
 };
 
 export type Subscription = {
@@ -354,6 +358,7 @@ export type ResolversTypes = ResolversObject<{
   ProjectInput: ProjectInput;
   Query: ResolverTypeWrapper<{}>;
   Skill: ResolverTypeWrapper<Skill>;
+  SkillInput: SkillInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
   User: ResolverTypeWrapper<User>;
@@ -377,6 +382,7 @@ export type ResolversParentTypes = ResolversObject<{
   ProjectInput: ProjectInput;
   Query: {};
   Skill: Skill;
+  SkillInput: SkillInput;
   String: Scalars['String']['output'];
   Subscription: {};
   User: User;
@@ -416,14 +422,14 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   addCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationAddCategoryArgs, 'name'>>;
   addProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, Partial<MutationAddProjectArgs>>;
-  addSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationAddSkillArgs, 'name'>>;
+  addSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationAddSkillArgs, 'input'>>;
   deleteCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationDeleteCategoryArgs, 'id'>>;
   deleteProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>;
   deleteSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationDeleteSkillArgs, 'id'>>;
   health?: Resolver<ResolversTypes['Health'], ParentType, ContextType, RequireFields<MutationHealthArgs, 'status'>>;
   updateCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'id' | 'name'>>;
   updateProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>;
-  updateSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationUpdateSkillArgs, 'id' | 'name'>>;
+  updateSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationUpdateSkillArgs, 'id' | 'input'>>;
 }>;
 
 export type OrganizationRolesResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrganizationRoles'] = ResolversParentTypes['OrganizationRoles']> = ResolversObject<{
