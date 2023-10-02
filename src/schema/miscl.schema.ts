@@ -30,4 +30,8 @@ export default `#graphql
     name: String
     url: String 
   }
+  type Result {
+    status: Boolean!
+    message: String!
+  }
 `;

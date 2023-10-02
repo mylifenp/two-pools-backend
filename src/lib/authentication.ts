@@ -22,6 +22,7 @@ export const isTokenValid = (
 ) => {
   const access_token = params?.access_token as string;
   const id_token = params?.id_token as string;
+  console.log("access_token in ws", access_token);
   if (!access_token || !id_token) {
     return false;
   }
@@ -48,7 +49,7 @@ export default function authenticateToken(req: Request) {
   const access_token = req.headers.access_token as string;
   const id_token = req.headers.id_token as string;
   const organization = (req.headers.organization as string) ?? "default";
-
+  // console.log("access_token", access_token);
   if (!access_token || !id_token) {
     return undefined;
   }

@@ -1,4 +1,5 @@
 import categoryResolver from "./category.resolver.js";
+import emailSubscriptionResolver from "./email-subscription.resolver.js";
 import healthResolver from "./health.resolver.js";
 import projectResolver from "./project.resolver.js";
 import skillResolver from "./skill.resolver.js";
@@ -13,4 +14,5 @@ export default [
   categoryResolver,
   projectResolver,
   userResolver,
+  emailSubscriptionResolver,
 ];
