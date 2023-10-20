@@ -6,6 +6,7 @@ const config: CodegenConfig = {
   generates: {
     "./src/generated/resolvers-types.ts": {
       config: {
+        scalars: { Date: "string" },
         useIndexSignature: true,
       },
       plugins: ["typescript", "typescript-resolvers"],

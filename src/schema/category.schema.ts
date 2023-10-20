@@ -5,8 +5,8 @@ export default `#graphql
     suggestCategories(ids: [ID]): [Category]!
   }
   extend type Mutation {
-    addCategory(name: String!): Category!
-    updateCategory(id: ID!, name: String!): Category!
+    addCategory(input: CategoryInput!): Category!
+    updateCategory(id: ID!, input: CategoryInput!): Category!
     deleteCategory(id: ID!): Category!
   }
   extend type Subscription {
@@ -17,7 +17,10 @@ export default `#graphql
   type Category {
     id: ID!
     name: String!
-    createdAt: String
-    updatedAt: String
+    createdAt: Date!
+    updatedAt: Date!
+  }
+  input CategoryInput {
+    name: String!
   }
 `;

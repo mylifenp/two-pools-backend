@@ -22,27 +22,18 @@ export const isTokenValid = (
 ) => {
   const access_token = params?.access_token as string;
   const id_token = params?.id_token as string;
-  console.log("access_token in ws", access_token);
   if (!access_token || !id_token) {
     return false;
   }
-  try {
-    const valid = validateToken(removeBearer(id_token));
-    if (!valid) {
-      return false;
-    }
-    const tokenInfo = validateToken(removeBearer(id_token)) as JwtPayload;
-    if (!tokenInfo) {
-      return false;
-    }
-    const { email_verified } = tokenInfo;
-    if (!email_verified) {
-      return false;
-    }
-    return true;
-  } catch (err) {
+  const tokenInfo = validateToken(removeBearer(id_token)) as JwtPayload;
+  if (!tokenInfo) {
     return false;
   }
+  const { email_verified } = tokenInfo;
+  if (!email_verified) {
+    return false;
+  }
+  return true;
 };
 
 export default function authenticateToken(req: Request) {

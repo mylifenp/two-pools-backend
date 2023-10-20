@@ -14,7 +14,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
+  Date: { input: string; output: string; }
 };
 
 export type Attachment = {
@@ -30,10 +30,14 @@ export type AttachmentInput = {
 
 export type Category = {
   __typename?: 'Category';
-  createdAt?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  updatedAt?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type CategoryInput = {
+  name: Scalars['String']['input'];
 };
 
 export type EmailSubscription = {
@@ -102,7 +106,7 @@ export type Mutation = {
 
 
 export type MutationAddCategoryArgs = {
-  name: Scalars['String']['input'];
+  input: CategoryInput;
 };
 
 
@@ -148,7 +152,7 @@ export type MutationHealthArgs = {
 
 export type MutationUpdateCategoryArgs = {
   id: Scalars['ID']['input'];
-  name: Scalars['String']['input'];
+  input: CategoryInput;
 };
 
 
@@ -381,6 +385,7 @@ export type ResolversTypes = ResolversObject<{
   AttachmentInput: AttachmentInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Category: ResolverTypeWrapper<Category>;
+  CategoryInput: CategoryInput;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   EmailSubscription: ResolverTypeWrapper<EmailSubscription>;
   EmailSubscriptionInput: EmailSubscriptionInput;
@@ -410,6 +415,7 @@ export type ResolversParentTypes = ResolversObject<{
   AttachmentInput: AttachmentInput;
   Boolean: Scalars['Boolean']['output'];
   Category: Category;
+  CategoryInput: CategoryInput;
   Date: Scalars['Date']['output'];
   EmailSubscription: EmailSubscription;
   EmailSubscriptionInput: EmailSubscriptionInput;
@@ -438,10 +444,10 @@ export type AttachmentResolvers<ContextType = any, ParentType extends ResolversP
 }>;
 
 export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = ResolversObject<{
-  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -472,7 +478,7 @@ export type HealthResolvers<ContextType = any, ParentType extends ResolversParen
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  addCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationAddCategoryArgs, 'name'>>;
+  addCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationAddCategoryArgs, 'input'>>;
   addEmailSubscription?: Resolver<ResolversTypes['Result'], ParentType, ContextType, RequireFields<MutationAddEmailSubscriptionArgs, 'input'>>;
   addProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, Partial<MutationAddProjectArgs>>;
   addSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationAddSkillArgs, 'input'>>;
@@ -481,7 +487,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'id'>>;
   deleteSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationDeleteSkillArgs, 'id'>>;
   health?: Resolver<ResolversTypes['Health'], ParentType, ContextType, RequireFields<MutationHealthArgs, 'status'>>;
-  updateCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'id' | 'name'>>;
+  updateCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'id' | 'input'>>;
   updateProject?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<MutationUpdateProjectArgs, 'id'>>;
   updateSkill?: Resolver<ResolversTypes['Skill'], ParentType, ContextType, RequireFields<MutationUpdateSkillArgs, 'id' | 'input'>>;
 }>;

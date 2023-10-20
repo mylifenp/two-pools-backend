@@ -63,11 +63,15 @@ export default {
   Mutation: {
     addCategory: async (
       parent: ResolversParentTypes,
-      { name }: MutationAddCategoryArgs,
+      { input }: MutationAddCategoryArgs,
       { models }: Context
     ) => {
       try {
-        const category = (await models.Category.create({ name })) as Category;
+        const filter = { name: input.name };
+        const category = await models.Category.findOneAndUpdate(filter, input, {
+          upsert: true,
+          new: true,
+        });
         await setJSON(`categories:${category.id}`, category);
         pubsub.publish(EVENTS.CATEGORY.CATEGORY_ADDED, {
           categoryAdded: category,
@@ -79,13 +83,13 @@ export default {
     },
     updateCategory: async (
       parent: ResolversParentTypes,
-      { id, name }: MutationUpdateCategoryArgs,
+      { id, input }: MutationUpdateCategoryArgs,
       context: Context
     ) => {
       const category =
         await context.models.Category.findByIdAndUpdate<Category>(
           { _id: id },
-          { name },
+          { ...input },
           { new: true }
         );
       if (!category) {
