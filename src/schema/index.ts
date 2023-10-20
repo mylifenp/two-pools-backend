@@ -1,4 +1,5 @@
 import categorySchema from "./category.schema.js";
+import emailSubscriptionSchema from "./email_subscription.schema.js";
 import healthSchema from "./health.schema.js";
 import misclSchema from "./miscl.schema.js";
 import projectSchema from "./project.schema.js";
@@ -26,4 +27,5 @@ export default [
   projectSchema,
   userSchema,
   healthSchema,
+  emailSubscriptionSchema,
 ];

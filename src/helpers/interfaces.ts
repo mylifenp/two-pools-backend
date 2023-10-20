@@ -22,11 +22,17 @@ export interface UserTokenInfo {
   given_name: string;
   family_name: string;
   org_roles: OrgRoles | undefined;
+  organization: string;
 }
 
-interface OrgRoles {
+export interface OrgRoles {
   [key: string]: {
     roles: string[];
     name: string;
   };
+}
+
+export interface WsConnectionParams {
+  access_token: string;
+  id_token: string;
 }

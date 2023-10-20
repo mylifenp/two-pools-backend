@@ -14,16 +14,22 @@ import { GraphQLError } from "graphql";
 import { getJSON, setJSON } from "./controller.miscl.js";
 import pubsub from "../pubsub.js";
 import { EVENTS } from "../subscriptions/index.js";
+import {
+  hasRole,
+  isAuthenticated,
+  // isSubscriptionAuthenticated,
+} from "../lib/authentication.js";
+import { composeResolvers } from "@graphql-tools/resolvers-composition";
 
-export default {
+const resolvers = {
   Query: {
     skills: async (
       parent: ResolversParentTypes,
       args: any,
       { models, redisClient }: Context
     ) => {
-      const skills_keys = await redisClient.keys("skills:*");
-      if (!skills_keys.length) {
+      const skill_keys = await redisClient.keys("skills:*");
+      if (!skill_keys.length) {
         const skills = await models.Skill.find<Skill>();
         for (let skill of skills) {
           await setJSON(`skills:${skill.id}`, skill);
@@ -31,7 +37,7 @@ export default {
         return skills;
       }
       const cached_skills = [];
-      for (let key of skills_keys) {
+      for (let key of skill_keys) {
         const skill = await getJSON(key);
         if (!skill) continue;
         cached_skills.push(skill);
@@ -66,11 +72,11 @@ export default {
   Mutation: {
     addSkill: async (
       parent: ResolversParentTypes,
-      { name }: MutationAddSkillArgs,
+      { input }: MutationAddSkillArgs,
       { models }: Context
     ) => {
       try {
-        const skill = (await models.Skill.create({ name })) as Skill;
+        const skill = (await models.Skill.create({ ...input })) as Skill;
         await setJSON(`skills:${skill.id}`, skill);
         pubsub.publish(EVENTS.SKILL.SKILL_ADDED, {
           skillAdded: skill,
@@ -82,12 +88,12 @@ export default {
     },
     updateSkill: async (
       parent: ResolversParentTypes,
-      { id, name }: MutationUpdateSkillArgs,
+      { id, input }: MutationUpdateSkillArgs,
       { models }: Context
     ) => {
       const skill = await models.Skill.findByIdAndUpdate<Skill>(
         { _id: id },
-        { name },
+        { ...input },
         { new: true }
       );
       if (!skill) {
@@ -123,10 +129,7 @@ export default {
     skillAdded: {
       subscribe: withFilter(
         () => pubsub.asyncIterator(EVENTS.SKILL.SKILL_ADDED),
-        (payload, variables) => {
-          console.log("payload", payload, "variables", variables);
-          return true;
-        }
+        (payload, variables) => true
       ),
     },
     skillUpdated: {
@@ -141,3 +144,14 @@ export default {
     },
   },
 };
+
+const resolverComposition = {
+  // "Query.skills": [isAuthenticated(), hasRole("admin")],
+  // "Query.skills": [isAuthenticated()],
+  // "Query.skill": [isAuthenticated()],
+  "Mutation.addSkill": [isAuthenticated()],
+  "Mutation.updateSkill": [isAuthenticated()],
+  "Mutation.deleteSkill": [isAuthenticated()],
+};
+
+export default composeResolvers(resolvers, resolverComposition);
