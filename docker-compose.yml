@@ -34,7 +34,7 @@ services:
       - ./.docker/database/data/db:/data/db/
       - ./.docker/database/data/log/:/var/log/database/
     ports:
-      - "27017:27017"
+      - "27000:27017"
 
   redis:
     image: "redis/redis-stack:latest"
