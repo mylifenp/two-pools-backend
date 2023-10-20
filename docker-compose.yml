@@ -41,7 +41,7 @@ services:
     container_name: "two-pools-redis"
     restart: "always"
     ports:
-      - "6379:6379"
+      - "6300:6379"
     volumes:
       - ./.docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
       - ./.docker/redis/redis-data:/data
@@ -56,7 +56,7 @@ services:
     container_name: "two-pools-redis-ps"
     restart: "always"
     ports:
-      - "6378:6379"
+      - "6301:6379"
     volumes:
       - ./.docker/redis/redis-ps.conf:/usr/local/etc/redis/redis.conf
       - ./.docker/redis/redis-ps-data:/data
